@@ -371,9 +371,10 @@ abstract class Command extends SymfonyCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($this->coroutine) {
-            go(function () {
+            run(function () {
                 call([$this, 'handle']);
             });
+
             return 0;
         }
         return call([$this, 'handle']);

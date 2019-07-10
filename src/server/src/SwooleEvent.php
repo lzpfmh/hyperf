@@ -55,6 +55,21 @@ class SwooleEvent
     const ON_CONNECT = 'connect';
 
     /**
+     * Swoole onHandShake event.
+     */
+    const ON_HAND_SHAKE = 'handshake';
+
+    /**
+     * Swoole onOpen event.
+     */
+    const ON_OPEN = 'open';
+
+    /**
+     * Swoole onMessage event.
+     */
+    const ON_MESSAGE = 'message';
+
+    /**
      * Swoole onClose event.
      */
     const ON_CLOSE = 'close';

@@ -187,14 +187,16 @@ abstract class AbstractServiceClient
 
         // According to the registry config of the consumer, retrieve the nodes.
         $consumers = $config->get('services.consumers', []);
+        $isMatch = false;
         foreach ($consumers as $consumer) {
             if (isset($consumer['name']) && $consumer['name'] === $this->serviceName) {
+                $isMatch = true;
                 break;
             }
         }
 
         // Current $consumer is the config of the specified consumer.
-        if (isset($consumer['registry']['protocol'], $consumer['registry']['address'])) {
+        if ($isMatch && isset($consumer['registry']['protocol'], $consumer['registry']['address'])) {
             // According to the protocol and address of the registry, retrieve the nodes.
             switch ($registryProtocol = $consumer['registry']['protocol'] ?? '') {
                 case 'consul':
@@ -262,7 +264,7 @@ abstract class AbstractServiceClient
         return make(Agent::class, [
             'clientFactory' => function () use ($config) {
                 return $this->container->get(ClientFactory::class)->create([
-                    'base_uri' => $config['address'] ?? null,
+                    'base_uri' => $config['address'] ?? Agent::DEFAULT_URI,
                 ]);
             },
         ]);
@@ -276,7 +278,7 @@ abstract class AbstractServiceClient
         return make(Health::class, [
             'clientFactory' => function () use ($config) {
                 return $this->container->get(ClientFactory::class)->create([
-                    'base_uri' => $config['address'] ?? null,
+                    'base_uri' => $config['address'] ?? Health::DEFAULT_URI,
                 ]);
             },
         ]);
